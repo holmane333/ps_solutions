@@ -3,7 +3,7 @@ from collections import deque
 T = int(input())
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    # 다익스트라 알고리즘 이용 (Lazy heap 방식)
+    # BFS 이용
     # ///////////////////////////////////////////////////////////////////////////////////
     ary = list(map(int, input().split()))
     N = ary[0]
@@ -17,23 +17,31 @@ for test_case in range(1, T + 1):
                 edges[i].append(j)
                 edges[j].append(i)
 
+    # 최솟값 결과 저장 변수
     res = int(1e9)
+    # 0 ~ N - 1까지 모두 순회
     for start in range(N):
+        # BFS 순회를 위해 deque 선언 후 시작점 저장
         dq = deque()
         dq.append(start)
-        v = [-1 for i in range(N)]
-        v[start] = 0
+        # 방문 여부 확인 배열
+        visit = [-1 for i in range(N)]
+        visit[start] = 0
+        # 현재 순회에 대한 결과 저장
         cnt = 0
         while (dq):
-            x = dq.popleft()
-            for node in edges[x]:
-                if (v[node] != -1): continue
-                v[node] = v[x] + 1
-                cnt += v[node]
+            # 현재 노드 cur 저장
+            cur = dq.popleft()
+            # cur와 연결된 노드 확인
+            for node in edges[cur]:
+                # 이미 방문한 노드일 경우 continue
+                if (visit[node] != -1): continue
+                # 방문했으므로 visit에 저장 및 거리 cnt에 추가, deque에 다음 노드 추가
+                visit[node] = visit[cur] + 1
+                cnt += visit[node]
                 dq.append(node)
+        # 결과 비교 후 작은 값 저장
         res = min(res, cnt)
-                
-        
-    # 도착지 위치까지의 최소 거리는 info의 N번째 인덱스에 있으므로 info[N] 출력
+    
     print(f"#{test_case} {res}")
     # ///////////////////////////////////////////////////////////////////////////////////
