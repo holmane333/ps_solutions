@@ -11,4 +11,4 @@ for _ in range(int(input())):
         ans += max(0, max_value - l[i])
         max_value = max(max_value, l[i])
     res.append(str(ans))
-print(*res, sep='\n')
+print('\n'.join(res))
